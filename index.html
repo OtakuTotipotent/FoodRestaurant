@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FoodRestaurant</title>
 
+  <!-- swiper js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+
   <!-- font awesome cdn link -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
@@ -50,11 +53,11 @@
 
   <!-- home -->
   <section class="home" id="home">
-    <div class="home-slider">
-      <div class="wrapper">
+    <div class="home-slider swiper">
+      <div class="wrapper swiper-wrapper">
 
         <!-- slide -->
-        <div class="slide">
+        <div class="slide swiper-slide">
           <div class="content">
             <span>Our Special Dish</span>
             <h3>Spicy Noodles</h3>
@@ -73,7 +76,7 @@
         </div>
 
         <!-- slide -->
-        <div class="slide">
+        <div class="slide swiper-slide">
           <div class="content">
             <span>Our Special Dish</span>
             <h3>Fried Chicken</h3>
@@ -92,7 +95,7 @@
         </div>
 
         <!-- slide -->
-        <div class="slide">
+        <div class="slide swiper-slide">
           <div class="content">
             <span>Our Special Dish</span>
             <h3>Hot Pizza</h3>
@@ -111,11 +114,17 @@
         </div>
 
       </div>
+
+      <div class="swiper-pagination"></div>
+
     </div>
   </section>
 
 
-  <!-- custom js files -->
+  <!-- js files -->
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+
   <script src="js/script.js"></script>
 </body>
 
