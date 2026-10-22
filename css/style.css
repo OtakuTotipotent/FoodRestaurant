@@ -604,6 +604,33 @@ header .icons #menu-bars {
   color: var(--green);
 }
 
+/* loader */
+
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10000;
+  background: rgba(255, 255, 255, .2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.loader-container img {
+  width: 35rem;
+}
+
+.loader-container.fade-out {
+  top: 110%;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* media queries */
 
 @media (max-width:991px) {
