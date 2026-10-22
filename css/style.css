@@ -52,7 +52,7 @@ section:nth-child(even) {
 
 .btn:hover {
   background: var(--green);
-  letter-spacing: .1rem;
+  font-style: italic;
 }
 
 .swiper-pagination-bullet-active {
@@ -87,6 +87,8 @@ header {
   justify-content: space-between;
   z-index: 1000;
   box-shadow: var(--box-shadow);
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, .5);
 }
 
 header .logo {
