@@ -1,92 +1,113 @@
-// variables & constants
-const menu = document.querySelector("#menu-bars");
+// Mobile navigation
+const menuToggle = document.querySelector("#menu-bars");
 const navbar = document.querySelector(".navbar");
+const header = document.querySelector("header");
 
-// menu toggle
-menu.onclick = () => {
-  menu.classList.toggle("fa-times");
-  navbar.classList.toggle("active");
-};
-
-const section = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll("header .navbar a");
-
-window.onscroll = () => {
-  menu.classList.remove("fa-times");
-  navbar.classList.remove("active");
-
-  section.forEach((sec) => {
-    let top = window.scrollY;
-    let height = sec.offsetHeight;
-    let offset = sec.offsetTop - 150;
-    let id = sec.getAttribute("id");
-
-    if ((top) => offset && top < offset + height) {
-      navLinks.forEach((link) => {
-        link.classList.remove("active");
-        document
-          .querySelector("header .navbar a[href*=" + id + "]")
-          .classList.add("active");
-      });
-    }
+if (menuToggle && navbar) {
+  menuToggle.addEventListener("click", () => {
+    menuToggle.classList.toggle("fa-times");
+    navbar.classList.toggle("active");
   });
-};
-
-// search toggle
-document.querySelector("#search-icon").onclick = () => {
-  document.querySelector("#search-form").classList.toggle("active");
-};
-
-document.querySelector("#close").onclick = () => {
-  document.querySelector("#search-form").classList.remove("active");
-};
-
-// swiper
-var swiper = new Swiper(".home-slider", {
-  spaceBetween: 30,
-  centeredSlides: true,
-  autoplay: {
-    delay: 7500,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  loop: true,
-});
-
-var swiper = new Swiper(".review-slider", {
-  spaceBetween: 20,
-  centeredSlides: true,
-  autoplay: {
-    delay: 7500,
-    disableOnInteraction: false,
-  },
-  loop: true,
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    640: {
-      slidesPerView: 2,
-    },
-    768: {
-      slidesPerView: 2,
-    },
-    1024: {
-      slidesPerView: 3,
-    },
-  },
-});
-
-// loader
-function loader() {
-  document.querySelector(".loader-container").classList.add("fade-out");
 }
 
-function fadeOut() {
-  setInterval(loader, 3000);
+// Keep the active navigation link in sync with the section currently on screen.
+const sections = Array.from(document.querySelectorAll("section[id]"));
+const navLinks = Array.from(
+  document.querySelectorAll('header .navbar a[href^="#"]'),
+);
+
+function updateActiveNavLink() {
+  if (!sections.length || !navLinks.length) return;
+
+  const activationLine = window.scrollY + (header?.offsetHeight || 0) + 24;
+  let currentSection = sections[0];
+
+  for (const section of sections) {
+    if (section.offsetTop <= activationLine) {
+      currentSection = section;
+    } else {
+      break;
+    }
+  }
+
+  // At the very bottom, keep the last linked section active rather than leaving a stale state.
+  if (
+    window.scrollY + window.innerHeight >=
+    document.documentElement.scrollHeight - 2
+  ) {
+    currentSection = sections[sections.length - 1];
+  }
+
+  navLinks.forEach((link) => {
+    link.classList.toggle(
+      "active",
+      link.getAttribute("href") === `#${currentSection.id}`,
+    );
+  });
 }
 
-window.onload = fadeOut;
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    menuToggle?.classList.remove("fa-times");
+    navbar?.classList.remove("active");
+  });
+});
+
+window.addEventListener("scroll", updateActiveNavLink, { passive: true });
+window.addEventListener("resize", updateActiveNavLink);
+window.addEventListener("load", updateActiveNavLink);
+updateActiveNavLink();
+
+// Search overlay
+const searchIcon = document.querySelector("#search-icon");
+const searchForm = document.querySelector("#search-form");
+const closeSearch = document.querySelector("#close");
+
+searchIcon?.addEventListener("click", () =>
+  searchForm?.classList.toggle("active"),
+);
+closeSearch?.addEventListener("click", () =>
+  searchForm?.classList.remove("active"),
+);
+
+// Home slider
+if (document.querySelector(".home-slider")) {
+  new Swiper(".home-slider", {
+    spaceBetween: 30,
+    centeredSlides: true,
+    autoplay: {
+      delay: 7500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    loop: true,
+  });
+}
+
+// Review slider
+if (document.querySelector(".review-slider")) {
+  new Swiper(".review-slider", {
+    spaceBetween: 20,
+    centeredSlides: true,
+    autoplay: {
+      delay: 7500,
+      disableOnInteraction: false,
+    },
+    loop: true,
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      640: { slidesPerView: 2 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+}
+
+// Dismiss the page loader once after initial load (instead of creating a repeating interval).
+function hideLoader() {
+  document.querySelector(".loader-container")?.classList.add("fade-out");
+}
+window.addEventListener("load", () => window.setTimeout(hideLoader, 3000));
