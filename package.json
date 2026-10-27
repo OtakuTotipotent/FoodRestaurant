@@ -1,0 +1,37 @@
+{
+  "name": "foodrestaurant",
+  "version": "1.0.0",
+  "description": "Official website for local restaurant, named FoodRest.",
+  "keywords": [
+    "food",
+    "restaurant",
+    "nodejs",
+    "express",
+    "fullstack",
+    "website"
+  ],
+  "homepage": "https://github.com/OtakuTotipotent/FoodRestaurant#readme",
+  "bugs": {
+    "url": "https://github.com/OtakuTotipotent/FoodRestaurant/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OtakuTotipotent/FoodRestaurant.git"
+  },
+  "license": "ISC",
+  "author": "Afnan Muhammad",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "express": "^5.3.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
