@@ -21,10 +21,11 @@
   "license": "ISC",
   "author": "Afnan Muhammad",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "tailwind": "npx @tailwindcss/cli -i ./views/index.css -o ./public/style.css --watch",
+    "dev": "concurrently -k \"nodemon app.js\" \"npm:tailwind\""
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.3",
@@ -32,6 +33,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "concurrently": "^10.0.6",
     "nodemon": "^3.1.14"
   }
 }
