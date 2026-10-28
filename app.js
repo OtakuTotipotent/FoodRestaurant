@@ -2,14 +2,15 @@ const express = require("express");
 const path = require("path");
 const rootDir = require("./utils/rootDir");
 const userRouter = require("./routes/user");
+const adminRouter = require("./routes/admin");
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(rootDir, "public")));
 
 app.use(userRouter);
+app.use("/admin", adminRouter);
 
 app.use((req, res) => {
   res.status(404).sendFile(path.join(rootDir, "views/404.html"));
