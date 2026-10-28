@@ -20,6 +20,24 @@
     <h1 class="p-4 rounded-md shadow-sm shadow-white my-4">Administration privileges granted!</h1>
   </section>
 
+  <section>
+    <h2>Add an item to <span>FoodRest.</span></h2>
+    <form action="/admin/cart/add" method="post">
+      <input type="text" name="name" id="name" placeholder="Enter the name of item">
+      <input type="number" name="price" id="price" placeholder="Enter price for this item">
+      <input type="number" name="quantity" id="quantity" placeholder="Enter available quantity for this item">
+
+      <select name="size" id="size">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+        <option value="extra">Extra Large</option>
+      </select>
+
+      <button type="submit">Add item</button>
+    </form>
+  </section>
+
 </body>
 
 </html>

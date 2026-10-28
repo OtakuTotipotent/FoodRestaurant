@@ -8,4 +8,10 @@ router.get("/", (req, res, next) => {
   res.sendFile(path.join(rootDir, "views/admin.html"));
 });
 
+router.post("/cart/add", (req, res, next) => {
+  const data = req.body;
+  console.log(data);
+  res.sendFile(path.join(rootDir, "views/success.html"));
+});
+
 module.exports = router;
