@@ -20,21 +20,29 @@
     <h1 class="p-4 rounded-md shadow-sm shadow-white my-4">Administration privileges granted!</h1>
   </section>
 
-  <section>
-    <h2>Add an item to <span>FoodRest.</span></h2>
-    <form action="/admin/cart/add" method="post">
-      <input type="text" name="name" id="name" placeholder="Enter the name of item">
-      <input type="number" name="price" id="price" placeholder="Enter price for this item">
-      <input type="number" name="quantity" id="quantity" placeholder="Enter available quantity for this item">
+  <section class="bg-gray-700/50 backdrop-blur-md max-w-3xl m-auto my-4 rounded-xl p-4">
+    <h2 class="text-center uppercase font-bold text-green-500">Add an item to <span>FoodRest.</span></h2>
+    <form action="/admin/cart/add" method="post" class="my-4 p-1 md:p-4 grid gap-5 sm:grid-cols-2">
+      <input class="bg-green-950 text-gray-300 placeholder:text-green-500 border-none outline-none px-3 py-2 rounded-md"
+        type="text" name="name" id="name" placeholder="Enter the name of item" required>
+      <input
+        class="bg-green-950 text-gray-300 placeholder:text-green-500 border-none outline-none px-3 py-2 rounded-md appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        type="number" name="price" id="price" placeholder="Enter price for this item" required>
+      <input
+        class="bg-green-950 text-gray-300 placeholder:text-green-500 border-none outline-none px-3 py-2 rounded-md appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        type="number" name="quantity" id="quantity" placeholder="Enter available quantity for this item" required>
 
-      <select name="size" id="size">
+      <select name="size" id="size" class="bg-green-950 text-green-500 border-none outline-none px-3 py-2 rounded-md"
+        required>
         <option value="small">Small</option>
         <option value="medium">Medium</option>
         <option value="large">Large</option>
         <option value="extra">Extra Large</option>
       </select>
 
-      <button type="submit">Add item</button>
+      <button type="submit"
+        class="bg-green-600/50 text-green-200 rounded-md p-1.5 uppercase font-bold leading-loose tracking-wide hover:bg-green-500/50">Save
+        Item</button>
     </form>
   </section>
 
