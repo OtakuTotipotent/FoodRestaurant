@@ -15,7 +15,7 @@ app.use(userRouter);
 app.use("/admin", adminRouter);
 
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(rootDir, "views/404.html"));
+  res.status(404).render("404", { page_title: "File Not Found" });
 });
 
 app.listen(5000, () => {
