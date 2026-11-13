@@ -21,22 +21,19 @@
   "license": "ISC",
   "author": "Afnan Muhammad",
   "type": "commonjs",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind": "npx @tailwindcss/cli -i ./views/index.css -o ./public/style.css --watch",
-    "dev": "concurrently -k \"nodemon app.js\" \"npm:tailwind\""
+    "con": "concurrently -k \"nodemon server.js\" \"npm:tailwind\"",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.3.4",
-    "dotenv": "^18.0.9",
-    "ejs": "^7.0.2",
+    "dotenv": "^18.0.10",
     "express": "^5.3.0",
-    "mongoose": "^9.11.4",
-    "tailwindcss": "^4.3.4"
+    "mongoose": "^9.12.1"
   },
   "devDependencies": {
-    "concurrently": "^10.0.6",
     "nodemon": "^3.1.14"
   }
 }
