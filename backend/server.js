@@ -1,11 +1,19 @@
 const express = require("express");
+const { PORT } = require("./configs/index");
+const connectDB = require("./utils/database");
 
+// application
 const app = express();
 
+// database
+connectDB();
+
+// routes
 app.get("/", (req, res) => {
   res.send({ msg: "Welcome to FoodRest" });
 });
 
-app.listen(3000, () => {
-  console.log(`FoodRest server online at http://localhost:${3000}`);
+// server
+app.listen(PORT, () => {
+  console.log(`FoodRest server online at http://localhost:${PORT}`);
 });
