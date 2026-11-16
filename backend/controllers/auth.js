@@ -27,19 +27,19 @@ const authController = {
       const existedEmail = await User.exists({ email });
       const existedUsername = await User.exists({ username });
 
-      if (existedEmail) {
-        const error = {
-          status: 409,
-          message: "Email already exists. Go for Login, or use other email!",
-        };
-        return next(error);
-      }
-
       if (existedUsername) {
         const error = {
           status: 409,
           message:
             "Username already exists. Go for Login, or try other username!",
+        };
+        return next(error);
+      }
+
+      if (existedEmail) {
+        const error = {
+          status: 409,
+          message: "Email already exists. Go for Login, or use other email!",
         };
         return next(error);
       }
