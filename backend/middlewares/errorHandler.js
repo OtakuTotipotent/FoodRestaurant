@@ -9,7 +9,7 @@ const errorHandler = (error, req, res, next) => {
 
   // Validation error
   if (error instanceof ValidationError) {
-    status = 400; // bad request
+    status = 400;
     data.message = error.message;
 
     return res.status(status).json(data);

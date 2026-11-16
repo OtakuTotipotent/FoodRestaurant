@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
 const { MONGODB_CONNECTION_STRING } = require("../configs/index");
 
-async function connectDB() {
+const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(MONGODB_CONNECTION_STRING);
-    console.log(
-      `Database Connection Successful. Host: ${conn.connection.host}`,
-    );
+    await mongoose.connect(MONGODB_CONNECTION_STRING, {
+      dbName: "FoodRest",
+    });
+    console.log("MongoDB database connection successful.");
   } catch (error) {
-    console.log(`Database Connection Failed. ${error}`);
+    console.log(`MongoDB database connection failed. ${error}`);
+    throw error;
   }
-}
+};
 
 module.exports = connectDB;

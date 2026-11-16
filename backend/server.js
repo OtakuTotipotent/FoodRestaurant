@@ -1,5 +1,4 @@
 const express = require("express");
-
 const { PORT } = require("./configs/index");
 const connectDB = require("./utils/database");
 const userRouter = require("./routes/user");
@@ -16,13 +15,23 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRouter);
 
-// database
-connectDB();
-
 // middlewares
 app.use(errorHandler);
 
-// server
-app.listen(PORT, () => {
-  console.log(`FoodRest server online at http://localhost:${PORT}`);
-});
+// server startup along with database
+const startServer = async () => {
+  try {
+    // database
+    await connectDB();
+
+    // server
+    app.listen(PORT, () => {
+      console.log(`FoodRest server online at http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Server startup failed:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

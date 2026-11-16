@@ -2,69 +2,75 @@ const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
-const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
+
+const userSignupSchema = Joi.object({
+  username: Joi.string().trim().min(3).max(30).required(),
+  fullname: Joi.string().trim().max(30).required(),
+  email: Joi.string().trim().email().lowercase().required(),
+  password: Joi.string().pattern(passwordPattern).required(),
+  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+});
 
 const authController = {
   async signup(req, res, next) {
-    // 1. User input validation
-    const userSignupSchema = Joi.object({
-      username: Joi.string().min(3).max(30).required(),
-      fullname: Joi.string().max(30).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().pattern(password_pattern).required(),
-      confirmPassword: Joi.valid(Joi.ref("password")).required(),
-    });
-
-    const { error } = userSignupSchema.validate(req.body);
-    if (error) {
-      return next(error);
-    }
-
-    // User account existence checking
-    const { username, fullname, email, password } = req.body;
-
     try {
-      const existedEmail = await User.exists({ email });
-      const existedUsername = await User.exists({ username });
+      // 1. Validate input
+      const { error, value } = userSignupSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
 
-      if (existedUsername) {
-        const error = {
-          status: 409,
-          message:
-            "Username already exists. Go for Login, or try other username!",
-        };
-        return next(error);
+      if (error) return next(error);
+
+      const { username, fullname, email, password } = value;
+
+      // 2. Check existing account
+      const existingUser = await User.findOne({
+        $or: [{ email }, { username }],
+      });
+
+      if (existingUser) {
+        if (existingUser.username === username) {
+          return res.status(409).json({
+            message: "Username already exists.",
+          });
+        }
+        return res.status(409).json({
+          message: "Email already exists.",
+        });
       }
 
-      if (existedEmail) {
-        const error = {
-          status: 409,
-          message: "Email already exists. Go for Login, or use other email!",
-        };
-        return next(error);
-      }
+      // 3. Hash password
+      const hashedPassword = await bcrypt.hash(password, 12);
 
-      // Password hashing
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Store new user in database
-      const newUser = new User({
+      // 4. Create user
+      const user = await User.create({
         username,
-        email,
         fullname,
+        email,
         password: hashedPassword,
       });
 
-      const user = await newUser.save();
-
-      // Response sending
-      return res.status(201).json({ user });
+      // 5. Send safe response
+      return res.status(201).json({
+        message: "Account created successfully.",
+        user: {
+          id: user._id,
+          username: user.username,
+          fullname: user.fullname,
+          email: user.email,
+          createdAt: user.createdAt,
+        },
+      });
     } catch (error) {
       return next(error);
     }
   },
 
-  async login() {},
+  async login(req, res, next) {
+    // Implement later
+  },
 };
 
 module.exports = authController;
