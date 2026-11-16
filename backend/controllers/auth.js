@@ -11,9 +11,8 @@ const authController = {
       username: Joi.string().min(3).max(30).required(),
       fullname: Joi.string().max(30).required(),
       email: Joi.string().email().required(),
-      phone: Joi.number().max(20),
       password: Joi.string().pattern(password_pattern).required(),
-      confirmPassword: Joi.ref("password"),
+      confirmPassword: Joi.valid(Joi.ref("password")).required(),
     });
 
     const { error } = userSignupSchema.validate(req.body);
@@ -22,11 +21,11 @@ const authController = {
     }
 
     // User account existence checking
-    const { username, fullname, email, password, phone } = req.body;
+    const { username, fullname, email, password } = req.body;
 
     try {
-      const existedEmail = await User.exists(email);
-      const existedUsername = await User.exists(username);
+      const existedEmail = await User.exists({ email });
+      const existedUsername = await User.exists({ username });
 
       if (existedEmail) {
         const error = {
@@ -44,26 +43,25 @@ const authController = {
         };
         return next(error);
       }
+
+      // Password hashing
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Store new user in database
+      const newUser = new User({
+        username,
+        email,
+        fullname,
+        password: hashedPassword,
+      });
+
+      const user = await newUser.save();
+
+      // Response sending
+      return res.status(201).json({ user });
     } catch (error) {
       return next(error);
     }
-
-    // Password hashing
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Store new user in database
-    const newUser = new User({
-      username,
-      email,
-      fullname,
-      phone,
-      password: hashedPassword,
-    });
-
-    const user = await newUser.save();
-
-    // Response sending
-    return res.status(201).json({ user });
   },
 
   async login() {},
