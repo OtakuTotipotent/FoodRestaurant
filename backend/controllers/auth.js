@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const UserDTO = require("../utils/userDTO");
 
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
 
@@ -53,15 +54,10 @@ const authController = {
       });
 
       // 5. Send safe response
+      const userDto = new UserDTO(user);
       return res.status(201).json({
         message: "Account created successfully.",
-        user: {
-          id: user._id,
-          username: user.username,
-          fullname: user.fullname,
-          email: user.email,
-          createdAt: user.createdAt,
-        },
+        user: userDto,
       });
     } catch (error) {
       return next(error);
@@ -104,15 +100,11 @@ const authController = {
         return next(error);
       }
 
+      // Send safe response
+      const userDto = new UserDTO(user);
       return res.status(200).json({
         message: "Account login successfully.",
-        user: {
-          id: user._id,
-          username: user.username,
-          fullname: user.fullname,
-          email: user.email,
-          createdAt: user.createdAt,
-        },
+        user: userDto,
       });
     } catch (error) {
       return next(error);
