@@ -2,13 +2,15 @@ const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const UserDTO = require("../utils/userDTO");
+const JWTService = require("../services/JWT");
+const RefreshToken = require("../models/token");
 
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
 
 const authController = {
   async signup(req, res, next) {
     try {
-      // 1. Validate input
+      // Validate input
       const userSignupSchema = Joi.object({
         username: Joi.string().trim().min(3).max(30).required(),
         fullname: Joi.string().trim().max(30).required(),
@@ -26,7 +28,7 @@ const authController = {
 
       const { username, fullname, email, password } = value;
 
-      // 2. Check existing account
+      // Check existing account
       const existingUser = await User.findOne({
         $or: [{ email }, { username }],
       });
@@ -42,10 +44,10 @@ const authController = {
         });
       }
 
-      // 3. Hash password
+      // Hash password
       const hashedPassword = await bcrypt.hash(password, 12);
 
-      // 4. Create user
+      // Create user
       const user = await User.create({
         username,
         fullname,
@@ -53,12 +55,36 @@ const authController = {
         password: hashedPassword,
       });
 
-      // 5. Send safe response
+      // Generate Token
+      const accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
+      const refreshToken = JWTService.signRefreshToken(
+        {
+          _id: user._id,
+        },
+        "60m",
+      );
+
+      await JWTService.storeRefreshToken(refreshToken, user._id);
+
+      res.cookie("accessToken", accessToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      // Send safe response
       const userDto = new UserDTO(user);
       return res.status(201).json({
         message: "Account created successfully.",
         user: userDto,
+        auth: true,
       });
+
+      // Error handling
     } catch (error) {
       return next(error);
     }
@@ -100,11 +126,35 @@ const authController = {
         return next(error);
       }
 
+      // Generate Token
+      const accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
+      const refreshToken = JWTService.signRefreshToken(
+        { _id: user._id },
+        "60m",
+      );
+
+      await RefreshToken.updateOne(
+        { _id: user._id },
+        { token: refreshToken },
+        { upsert: true },
+      );
+
+      res.cookie("accessToken", accessToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
       // Send safe response
       const userDto = new UserDTO(user);
       return res.status(200).json({
         message: "Account login successfully.",
         user: userDto,
+        auth: true,
       });
     } catch (error) {
       return next(error);

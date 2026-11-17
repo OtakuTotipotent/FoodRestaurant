@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const { PORT } = require("./configs/index");
 const connectDB = require("./utils/database");
 const userRouter = require("./routes/user");
@@ -6,6 +7,7 @@ const errorHandler = require("./middlewares/errorHandler");
 
 // application
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 
 // routes
