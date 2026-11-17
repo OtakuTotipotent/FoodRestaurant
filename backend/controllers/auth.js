@@ -4,18 +4,18 @@ const User = require("../models/user");
 
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
 
-const userSignupSchema = Joi.object({
-  username: Joi.string().trim().min(3).max(30).required(),
-  fullname: Joi.string().trim().max(30).required(),
-  email: Joi.string().trim().email().lowercase().required(),
-  password: Joi.string().pattern(passwordPattern).required(),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
-});
-
 const authController = {
   async signup(req, res, next) {
     try {
       // 1. Validate input
+      const userSignupSchema = Joi.object({
+        username: Joi.string().trim().min(3).max(30).required(),
+        fullname: Joi.string().trim().max(30).required(),
+        email: Joi.string().trim().email().lowercase().required(),
+        password: Joi.string().pattern(passwordPattern).required(),
+        confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+      });
+
       const { error, value } = userSignupSchema.validate(req.body, {
         abortEarly: false,
         stripUnknown: true,
@@ -69,7 +69,54 @@ const authController = {
   },
 
   async login(req, res, next) {
-    // Implement later
+    try {
+      // Validate input
+      const userLoginSchema = Joi.object({
+        username: Joi.string().trim().min(3).max(30).required(),
+        password: Joi.string().pattern(passwordPattern).required(),
+      });
+
+      const { error, value } = userLoginSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+
+      if (error) return next(error);
+
+      // Check credentials
+      const { username, password } = value;
+      const user = await User.findOne({ username });
+      if (!user) {
+        const error = {
+          status: 401,
+          message: "Username does not exist!",
+        };
+
+        return next(error);
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        const error = {
+          status: 401,
+          message: "Wrong password!",
+        };
+        return next(error);
+      }
+
+      return res.status(200).json({
+        message: "Account login successfully.",
+        user: {
+          id: user._id,
+          username: user.username,
+          fullname: user.fullname,
+          email: user.email,
+          createdAt: user.createdAt,
+        },
+      });
+    } catch (error) {
+      return next(error);
+    }
   },
 };
 
