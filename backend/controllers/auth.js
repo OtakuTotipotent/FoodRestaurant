@@ -8,6 +8,7 @@ const RefreshToken = require("../models/token");
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
 
 const authController = {
+  // Signup
   async signup(req, res, next) {
     try {
       // Validate input
@@ -90,15 +91,16 @@ const authController = {
     }
   },
 
-  async login(req, res, next) {
+  // Signin
+  async signin(req, res, next) {
     try {
       // Validate input
-      const userLoginSchema = Joi.object({
+      const userSigninSchema = Joi.object({
         username: Joi.string().trim().min(3).max(30).required(),
         password: Joi.string().pattern(passwordPattern).required(),
       });
 
-      const { error, value } = userLoginSchema.validate(req.body, {
+      const { error, value } = userSigninSchema.validate(req.body, {
         abortEarly: false,
         stripUnknown: true,
       });
@@ -152,9 +154,29 @@ const authController = {
       // Send safe response
       const userDto = new UserDTO(user);
       return res.status(200).json({
-        message: "Account login successfully.",
+        message: "Account signin successfully.",
         user: userDto,
         auth: true,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
+
+  // Signout
+  async signout(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+
+      await RefreshToken.deleteOne({ token: refreshToken });
+
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+
+      res.status(200).json({
+        message: "Account signout successful",
+        user: null,
+        auth: false,
       });
     } catch (error) {
       return next(error);
