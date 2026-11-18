@@ -78,6 +78,7 @@ const productController = {
     try {
       // Get all products from db
       const foodProducts = await FoodProduct.find({});
+      // TODO: check if there is no product in database
 
       const foodProductDto = [];
 
@@ -88,7 +89,7 @@ const productController = {
 
       // Send safe response
       res.status(200).json({
-        message: "Testing... Show all products",
+        message: "All food products available are fetched.",
         products: foodProductDto,
       });
     } catch (error) {
@@ -98,9 +99,32 @@ const productController = {
 
   // Show one product
   async showById(req, res, next) {
-    res.status(200).json({
-      message: "Testing... Show one product",
-    });
+    try {
+      // Validate input
+      const showByIdSchema = Joi.object({
+        id: Joi.string().trim().required(),
+      });
+
+      const { error, value } = showByIdSchema.validate(req.params, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+
+      if (error) {
+        return next(error);
+      }
+
+      const foodProduct = await FoodProduct.find({ _id: id });
+      const foodProductDto = new FoodProductDTO(foodProduct);
+
+      // Send safe response
+      res.status(200).json({
+        message: "Desired FoodRest product fetched successfully",
+        product: foodProductDto,
+      });
+    } catch (error) {
+      return next(error);
+    }
   },
 
   // Update a product
