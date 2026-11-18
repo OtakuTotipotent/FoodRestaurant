@@ -12,5 +12,7 @@ router.post("/signin", authController.signin);
 
 router.post("/signout", auth, authController.signout);
 
+router.get("/refresh", authController.refresh);
+
 // exports
 module.exports = router;

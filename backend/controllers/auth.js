@@ -182,6 +182,77 @@ const authController = {
       return next(error);
     }
   },
+
+  // Refresh
+  async refresh(req, res, next) {
+    try {
+      // Get token from cookies
+      const ogRefreshToken = req.cookies.refreshToken;
+
+      if (!ogRefreshToken) {
+        const error = {
+          status: 401,
+          message: "Unauthorized",
+        };
+
+        return next(error);
+      }
+
+      // Verify token
+      const verifiedRefreshToken =
+        JWTService.verifyRefreshToken(ogRefreshToken);
+
+      if (!verifiedRefreshToken) {
+        const error = {
+          status: 401,
+          message: "Unauthorized",
+        };
+        return next(error);
+      }
+
+      // Check user credibility
+      const { _id } = verifiedRefreshToken;
+
+      const match = RefreshToken.findOne({ _id, ogRefreshToken });
+
+      if (!match) {
+        const error = {
+          status: 401,
+          message: "Unauthorized",
+        };
+        return next(error);
+      }
+
+      // Generate new token
+      const accessToken = JWTService.signAccessToken({ _id }, "30m");
+      const refreshToken = JWTService.signRefreshToken({ _id }, "60m");
+
+      // Update database
+      await RefreshToken.updateOne({ _id }, { refreshToken });
+
+      res.cookie("accessToken", accessToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+      });
+
+      // Return safe response
+      const user = await User.findOne({ _id });
+      const userDto = new UserDTO(user);
+
+      return res.status(200).json({
+        message: "Account token refreshed!",
+        user: userDto,
+        auth: true,
+      });
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 
 module.exports = authController;
