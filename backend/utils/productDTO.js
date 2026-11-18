@@ -1,0 +1,14 @@
+class FoodProductDTO {
+  constructor(foodProduct) {
+    this.title = foodProduct.title;
+    this.category = foodProduct.category;
+    this.description = foodProduct.description;
+    this.quantity = foodProduct.quantity;
+    this.price = foodProduct.price;
+    this.size = foodProduct.size;
+    this.isAvailable = foodProduct.isAvailable;
+    this.image = foodProduct.imagePath;
+  }
+}
+
+module.exports = FoodProductDTO;

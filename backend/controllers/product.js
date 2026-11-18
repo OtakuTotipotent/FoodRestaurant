@@ -1,9 +1,73 @@
+const fs = require("fs");
+const Joi = require("joi");
+const FoodProduct = require("../models/product");
+const { BACKEND_SERVER_PATH } = require("../configs/index");
+const FoodProductDTO = require("../utils/productDTO");
+
 const productController = {
   // Create new product
   async create(req, res, next) {
-    res.status(200).json({
-      message: "Testing... Create new product",
-    });
+    try {
+      // Validate input
+      const productCreationSchema = Joi.object({
+        title: Joi.string().trim().min(3).max(30).required(),
+        category: Joi.string().trim().min(3).max(30).required(),
+        description: Joi.string().trim().max(100).required(),
+        quantity: Joi.number().min(0).required(),
+        price: Joi.number().min(0).required(),
+        size: Joi.string().trim().min(5).required(),
+        isAvailable: Joi.boolean().required(),
+        image: Joi.string().required(),
+      });
+
+      const { error, value } = productCreationSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+      if (error) {
+        return next(error);
+      }
+
+      // Get values
+      const {
+        title,
+        category,
+        description,
+        quantity,
+        price,
+        size,
+        isAvailable,
+        image,
+      } = value;
+
+      const imgBuffer = Buffer.from(
+        image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
+        "base64",
+      );
+
+      const imagePath = `${Date.now()}-${title}.png`;
+      fs.writeFileSync(`public/uploads/${imagePath}`, imgBuffer);
+
+      // Save to database
+      const foodProduct = await FoodProduct.create({
+        title,
+        category,
+        description,
+        quantity,
+        price,
+        size,
+        isAvailable,
+        imagePath: `${BACKEND_SERVER_PATH}/public/uploads/${imagePath}`,
+      });
+
+      // Send safe response
+      const foodProductDto = new FoodProductDTO(foodProduct);
+      return res.status(201).json({ product: foodProductDto });
+
+      // Handle errors
+    } catch (error) {
+      return next(error);
+    }
   },
 
   // Show all products

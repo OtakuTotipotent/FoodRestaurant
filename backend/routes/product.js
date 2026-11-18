@@ -15,7 +15,7 @@ router.get("/:id", productController.showById);
 router.post("/", auth, productController.create);
 
 // Update product
-router.patch("/:id", auth, productController.update);
+router.put("/:id", auth, productController.update);
 
 // Delete product
 router.delete("/:id", auth, productController.delete);
