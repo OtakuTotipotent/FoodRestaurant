@@ -211,9 +211,12 @@ const authController = {
       }
 
       // Check user credibility
-      const { _id } = verifiedRefreshToken;
+      const id = verifiedRefreshToken._id;
 
-      const match = RefreshToken.findOne({ _id, ogRefreshToken });
+      const match = await RefreshToken.findOne({
+        _id: id,
+        token: ogRefreshToken,
+      });
 
       if (!match) {
         const error = {
@@ -224,11 +227,14 @@ const authController = {
       }
 
       // Generate new token
-      const accessToken = JWTService.signAccessToken({ _id }, "30m");
-      const refreshToken = JWTService.signRefreshToken({ _id }, "60m");
+      const accessToken = JWTService.signAccessToken({ _id: id }, "30m");
+      const refreshToken = JWTService.signRefreshToken({ _id: id }, "60m");
 
       // Update database
-      await RefreshToken.updateOne({ _id }, { refreshToken });
+      await RefreshToken.updateOne(
+        { _id: id },
+        { $set: { token: refreshToken } },
+      );
 
       res.cookie("accessToken", accessToken, {
         maxAge: 1000 * 60 * 60 * 24,
@@ -241,7 +247,7 @@ const authController = {
       });
 
       // Return safe response
-      const user = await User.findOne({ _id });
+      const user = await User.findOne({ _id: id });
       const userDto = new UserDTO(user);
 
       return res.status(200).json({
