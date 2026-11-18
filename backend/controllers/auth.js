@@ -68,13 +68,15 @@ const authController = {
       await JWTService.storeRefreshToken(refreshToken, user._id);
 
       res.cookie("accessToken", accessToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 30,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       res.cookie("refreshToken", refreshToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       // Send safe response
@@ -136,19 +138,21 @@ const authController = {
       );
 
       await RefreshToken.updateOne(
-        { _id: user._id },
+        { userId: user._id },
         { token: refreshToken },
         { upsert: true },
       );
 
       res.cookie("accessToken", accessToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 30,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       res.cookie("refreshToken", refreshToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       // Send safe response
@@ -214,7 +218,7 @@ const authController = {
       const id = verifiedRefreshToken._id;
 
       const match = await RefreshToken.findOne({
-        _id: id,
+        userId: id,
         token: ogRefreshToken,
       });
 
@@ -232,18 +236,20 @@ const authController = {
 
       // Update database
       await RefreshToken.updateOne(
-        { _id: id },
+        { userId: id, token: ogRefreshToken },
         { $set: { token: refreshToken } },
       );
 
       res.cookie("accessToken", accessToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 30,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       res.cookie("refreshToken", refreshToken, {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: 1000 * 60 * 60,
         httpOnly: true,
+        sameSite: "lax",
       });
 
       // Return safe response

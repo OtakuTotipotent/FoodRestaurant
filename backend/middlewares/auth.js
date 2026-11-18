@@ -5,21 +5,25 @@ const UserDTO = require("../utils/userDTO");
 const auth = async (req, res, next) => {
   try {
     // Validate tokens
-    const { refreshToken, accessToken } = req.cookies;
+    const { accessToken } = req.cookies;
 
-    if (!refreshToken || !accessToken) {
-      const error = {
+    if (!accessToken) {
+      return next({
         status: 401,
         message: "Unauthorized",
-      };
-
-      return next(error);
+      });
     }
 
     // Get user
     const { _id } = JWTService.verifyAccessToken(accessToken);
 
-    const user = await User.findOne({ _id: _id });
+    const user = await User.findById(_id);
+    if (!user) {
+      return next({
+        status: 401,
+        message: "Unauthorized",
+      });
+    }
 
     const userDto = new UserDTO(user);
 

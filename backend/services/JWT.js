@@ -28,15 +28,8 @@ class JWTService {
 
   // Store refresh token
   static async storeRefreshToken(token, userId) {
-    try {
-      const newToken = new RefreshToken({
-        token: token,
-        userId: userId,
-      });
-      await newToken.save();
-    } catch (error) {
-      console.log(error);
-    }
+    const newToken = new RefreshToken({ userId, token });
+    return await newToken.save();
   }
 }
 
