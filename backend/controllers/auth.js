@@ -18,6 +18,7 @@ const authController = {
         email: Joi.string().trim().email().lowercase().required(),
         password: Joi.string().pattern(passwordPattern).required(),
         confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+        role: Joi.forbidden(),
       });
 
       const { error, value } = userSignupSchema.validate(req.body, {

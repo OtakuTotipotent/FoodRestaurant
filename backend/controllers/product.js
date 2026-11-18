@@ -114,10 +114,18 @@ const productController = {
         return next(error);
       }
 
-      const foodProduct = await FoodProduct.find({ _id: id });
-      const foodProductDto = new FoodProductDTO(foodProduct);
+      // Query database
+      const { id } = value;
+      const foodProduct = await FoodProduct.findById(id);
+      if (!foodProduct) {
+        return next({
+          status: 404,
+          message: "Product not found.",
+        });
+      }
 
       // Send safe response
+      const foodProductDto = new FoodProductDTO(foodProduct);
       res.status(200).json({
         message: "Desired FoodRest product fetched successfully",
         product: foodProductDto,

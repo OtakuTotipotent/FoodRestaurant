@@ -1,23 +1,20 @@
 const express = require("express");
 const auth = require("../middlewares/auth");
+const authorize = require("../middlewares/authorize");
 const productController = require("../controllers/product");
 
-// init
 const router = express.Router();
 
-// Show all products
+// Public routes
 router.get("/", productController.showAll);
 
-// Show one product
 router.get("/:id", productController.showById);
 
-// Create new product
-router.post("/", auth, productController.create);
+// Admin-only routes
+router.post("/", auth, authorize("admin"), productController.create);
 
-// Update product
-router.put("/:id", auth, productController.update);
+router.put("/:id", auth, authorize("admin"), productController.update);
 
-// Delete product
-router.delete("/:id", auth, productController.delete);
+router.delete("/:id", auth, authorize("admin"), productController.delete);
 
 module.exports = router;
