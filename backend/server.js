@@ -2,7 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const { PORT } = require("./configs/index");
 const connectDB = require("./utils/database");
-const userRouter = require("./routes/user");
+const authRouter = require("./routes/auth");
 const errorHandler = require("./middlewares/errorHandler");
 
 // application
@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   res.send({ msg: "Welcome to FoodRest" });
 });
 
-app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 // middlewares
 app.use(errorHandler);
