@@ -13,7 +13,7 @@ const authController = {
     try {
       // Validate input
       const userSignupSchema = Joi.object({
-        username: Joi.string().trim().min(3).max(30).required(),
+        username: Joi.string().trim().lowercase().min(3).max(30).required(),
         fullname: Joi.string().trim().max(30).required(),
         email: Joi.string().trim().email().lowercase().required(),
         password: Joi.string().pattern(passwordPattern).required(),

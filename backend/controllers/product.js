@@ -45,7 +45,7 @@ const productController = {
         "base64",
       );
 
-      const imagePath = `${Date.now()}-${title}.png`;
+      const imagePath = `${Date.now()}-${title.toLowerCase()}.png`;
       fs.writeFileSync(`public/uploads/${imagePath}`, imgBuffer);
 
       // Save to database
@@ -116,11 +116,19 @@ const productController = {
 
       // Query database
       const { id } = value;
-      const foodProduct = await FoodProduct.findById(id);
-      if (!foodProduct) {
+      let foodProduct;
+      try {
+        foodProduct = await FoodProduct.findById(id);
+        if (!foodProduct) {
+          return next({
+            status: 404,
+            message: "Product not found.",
+          });
+        }
+      } catch (error) {
         return next({
-          status: 404,
-          message: "Product not found.",
+          status: 403,
+          message: "Error: Given id is invalid.",
         });
       }
 
