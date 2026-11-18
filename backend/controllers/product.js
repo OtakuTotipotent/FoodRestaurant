@@ -62,7 +62,10 @@ const productController = {
 
       // Send safe response
       const foodProductDto = new FoodProductDTO(foodProduct);
-      return res.status(201).json({ product: foodProductDto });
+      return res.status(201).json({
+        message: "New food product created successfully",
+        product: foodProductDto,
+      });
 
       // Handle errors
     } catch (error) {
@@ -72,9 +75,25 @@ const productController = {
 
   // Show all products
   async showAll(req, res, next) {
-    res.status(200).json({
-      message: "Testing... Show all products",
-    });
+    try {
+      // Get all products from db
+      const foodProducts = await FoodProduct.find({});
+
+      const foodProductDto = [];
+
+      for (let i = 0; i < foodProducts.length; i++) {
+        const dto = new FoodProductDTO(foodProducts[i]);
+        foodProductDto.push(dto);
+      }
+
+      // Send safe response
+      res.status(200).json({
+        message: "Testing... Show all products",
+        products: foodProductDto,
+      });
+    } catch (error) {
+      return next(error);
+    }
   },
 
   // Show one product
