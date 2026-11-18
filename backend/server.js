@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const { PORT } = require("./configs/index");
 const connectDB = require("./utils/database");
 const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
 const errorHandler = require("./middlewares/errorHandler");
 
 // application
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRouter);
+app.use("/products", productRouter);
 
 // middlewares
 app.use(errorHandler);

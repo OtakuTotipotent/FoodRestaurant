@@ -4,10 +4,9 @@ const { Schema } = mongoose;
 
 const foodProductSchema = new Schema(
   {
-    pid: { type: String, required: false, unique: true },
-    name: { type: String, required: true },
-    category: { type: String, required: true },
-    quantity: { type: Number, required: true },
+    name: { type: String, required: true, trim: true },
+    category: { type: String, required: true, trim: true },
+    quantity: { type: Number, required: true, min: 0 },
     description: { type: String, required: true },
     price: {
       type: Number,
@@ -20,6 +19,7 @@ const foodProductSchema = new Schema(
       enum: ["Small", "Medium", "Large", "Extra"],
     },
     image: { type: String, required: true },
+    isAvailable: { type: Boolean, default: true },
   },
   {
     timestamps: true,
