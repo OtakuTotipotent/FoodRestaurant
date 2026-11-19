@@ -1,5 +1,6 @@
 class FoodProductDTO {
   constructor(foodProduct) {
+    this._id = foodProduct._id;
     this.title = foodProduct.title;
     this.category = foodProduct.category;
     this.description = foodProduct.description;
