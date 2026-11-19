@@ -9,6 +9,7 @@ class FoodProductDTO {
     this.size = foodProduct.size;
     this.isAvailable = foodProduct.isAvailable;
     this.image = foodProduct.imagePath;
+    this.createdAt = foodProduct.createdAt;
   }
 }
 

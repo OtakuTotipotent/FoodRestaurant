@@ -128,7 +128,7 @@ const productController = {
       } catch (error) {
         return next({
           status: 403,
-          message: "Error: Given id is invalid.",
+          message: "Error: Invalid ID.",
         });
       }
 
@@ -145,9 +145,106 @@ const productController = {
 
   // Update a product
   async update(req, res, next) {
-    res.status(200).json({
-      message: "Testing... Update a product",
-    });
+    try {
+      // Validate input
+      const updateProductSchema = Joi.object({
+        productId: Joi.string().trim().min(5).required(),
+        title: Joi.string().trim().min(3).max(30).required(),
+        category: Joi.string().trim().min(3).max(30).required(),
+        description: Joi.string().trim().max(100).required(),
+        quantity: Joi.number().min(0).required(),
+        price: Joi.number().min(0).required(),
+        size: Joi.string().trim().min(5).required(),
+        isAvailable: Joi.boolean().required(),
+        image: Joi.string(),
+      });
+
+      const { error, value } = updateProductSchema.validate(req.body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+
+      if (error) {
+        return next(error);
+      }
+
+      const {
+        productId,
+        title,
+        category,
+        description,
+        quantity,
+        price,
+        size,
+        isAvailable,
+        image,
+      } = value;
+
+      // Query database
+      let foodProduct;
+      try {
+        foodProduct = await FoodProduct.findById(productId);
+      } catch (error) {
+        return next({
+          status: 404,
+          message: "Product ID not found.",
+        });
+      }
+
+      // Handle image
+      if (image) {
+        // old image
+        let previousImage = foodProduct.imagePath;
+        previousImage = previousImage.split("/").at(-1);
+        fs.unlinkSync(`public/uploads/${previousImage}`);
+
+        // new image
+        const imgBuffer = Buffer.from(
+          image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ""),
+          "base64",
+        );
+        const imagePath = `${Date.now()}-${title.replaceAll(" ", "").toLowerCase()}.png`;
+        fs.writeFileSync(`public/uploads/${imagePath}`, imgBuffer);
+
+        // Save to database
+        foodProduct = await FoodProduct.updateOne(
+          { _id: productId },
+          {
+            title,
+            category,
+            description,
+            quantity,
+            price,
+            size,
+            isAvailable,
+            imagePath: `${BACKEND_SERVER_PATH}/public/uploads/${imagePath}`,
+          },
+        );
+      } else {
+        // Save to database keeping previous image
+        foodProduct = await FoodProduct.updateOne(
+          { _id: productId },
+          {
+            title,
+            category,
+            description,
+            quantity,
+            price,
+            size,
+            isAvailable,
+          },
+        );
+      }
+
+      // Send safe data
+      res.status(200).json({
+        message: "Updated product data successfully.",
+      });
+
+      // Handle errors
+    } catch (error) {
+      return next(error);
+    }
   },
 
   // Delete a product
