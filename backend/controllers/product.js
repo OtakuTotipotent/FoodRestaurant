@@ -45,7 +45,7 @@ const productController = {
         "base64",
       );
 
-      const imagePath = `${Date.now()}-${title.toLowerCase()}.png`;
+      const imagePath = `${Date.now()}-${title.replaceAll(" ", "").toLowerCase()}.png`;
       fs.writeFileSync(`public/uploads/${imagePath}`, imgBuffer);
 
       // Save to database
@@ -249,9 +249,38 @@ const productController = {
 
   // Delete a product
   async delete(req, res, next) {
-    res.status(200).json({
-      message: "Testing... Delete a product",
-    });
+    try {
+      // Validate input
+      const deleteProductSchema = Joi.object({
+        id: Joi.string().min(5).trim().required(),
+      });
+
+      const { error, value } = deleteProductSchema.validate(req.params);
+      const { id } = value;
+
+      if (error) {
+        return next(error);
+      }
+
+      // Delete product
+      try {
+        await FoodProduct.findByIdAndDelete(id);
+      } catch (error) {
+        return next({
+          status: 404,
+          message: "Product not found.",
+        });
+      }
+
+      // Send safe data
+      res.status(200).json({
+        message: "Deleted the product successfully.",
+      });
+
+      // Handle errors
+    } catch (error) {
+      return next(error);
+    }
   },
 };
 
