@@ -15,17 +15,21 @@
 
 - Install dependencies from the backend directory:
 
- ```bash
- npm install
- ```
+```bash
+npm install
+```
 
 - Create a `.env` file using `.env.example` as a reference, then set the values required for your environment.
 
 - Start the development server:
 
- ```bash
- npm run dev
- ```
+```bash
+npm run dev
+```
+
+## TODOs
+
+- Use Google Inter font family
 
 ## Credits
 
