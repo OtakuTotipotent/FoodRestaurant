@@ -6,19 +6,19 @@ import Home from "./components/pages/Home";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <div className="flex flex-col w-dvw h-dvh overflow-x-hidden p-2">
+      <div className="flex flex-col w-dvw h-dvh overflow-x-hidden p-2 relative bg-white font-sans">
+        <BrowserRouter>
           <Header />
 
-          <main className="flex-1">
+          <main className="flex-1 min-h-dvh mt-20">
             <Routes>
               <Route path="/" exact element={<Home />} />
             </Routes>
           </main>
 
           <Footer />
-        </div>
-      </BrowserRouter>
+        </BrowserRouter>
+      </div>
     </>
   );
 }
