@@ -10,7 +10,7 @@ const Header = () => {
         </NavLink>
 
         {/* Links */}
-        <div className="flex gap-0.5 md:gap-2 items-center">
+        <div className="hidden md:flex gap-0.5 md:gap-2 items-center">
           <NavLink className="text-gray-600 rounded-md p-2 text-sm hover:text-white hover:bg-green-600 transition-colors">
             Home
           </NavLink>

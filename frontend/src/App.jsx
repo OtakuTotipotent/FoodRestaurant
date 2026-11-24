@@ -6,11 +6,11 @@ import Home from "./components/pages/Home";
 function App() {
   return (
     <>
-      <div className="flex flex-col w-dvw h-dvh overflow-x-hidden p-2 relative bg-white font-sans">
+      <div className="w-dvw h-dvh overflow-x-hidden p-2 bg-white font-sans pt-16">
         <BrowserRouter>
           <Header />
 
-          <main className="flex-1 min-h-dvh mt-20">
+          <main className="min-h-dvh">
             <Routes>
               <Route path="/" exact element={<Home />} />
             </Routes>
