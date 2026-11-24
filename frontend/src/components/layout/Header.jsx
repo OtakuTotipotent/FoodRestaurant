@@ -7,11 +7,15 @@ import {
   FaMagnifyingGlass,
   FaUtensils,
   FaBars,
-  FaTimeline,
   FaRightToBracket,
   FaGear,
   FaArrowRightFromBracket,
   FaUserPlus,
+  FaHouse,
+  FaXmark,
+  FaBucket,
+  FaWebAwesome,
+  FaRoad,
 } from "react-icons/fa6";
 
 // Header Component
@@ -37,10 +41,10 @@ const Header = () => {
   const isLoggedIn = true;
 
   const nav_links = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/products" },
-    { name: "Order", path: "/order" },
-    { name: "About", path: "/about" },
+    { icon: <FaHouse />, name: "Home", path: "/" },
+    { icon: <FaBucket />, name: "Products", path: "/products" },
+    { icon: <FaRoad />, name: "Order", path: "/order" },
+    { icon: <FaWebAwesome />, name: "About", path: "/about" },
   ];
 
   // TailwindCSS Classes
@@ -49,13 +53,6 @@ const Header = () => {
       isActive
         ? "bg-green-600 text-white"
         : "text-gray-600 hover:bg-green-600 hover:text-white"
-    }`;
-
-  const iconLinkClass = ({ isActive }) =>
-    `h-10 w-10 rounded-full flex items-center justify-center transition-transform ${
-      isActive
-        ? "bg-green-600 text-white rotate-12"
-        : "bg-gray-200 text-blue-950 hover:bg-green-600 hover:text-white hover:rotate-12"
     }`;
 
   // Header Markup
@@ -71,7 +68,7 @@ const Header = () => {
         </NavLink>
 
         {/* Navbar */}
-        <div>
+        <div className="relative">
           {/* Desktop */}
           <ul className="hidden md:flex gap-0.5 md:gap-2 items-center">
             {nav_links.map((link) => (
@@ -90,20 +87,29 @@ const Header = () => {
           {/* Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-2xl text-green-600"
+            className="md:hidden text-2xl text-green-600 cursor-pointer"
           >
-            {isOpen ? <FaTimeline /> : <FaBars />}
+            {isOpen ? <FaXmark /> : <FaBars />}
           </button>
 
           {/* Mobile */}
           {isOpen && (
-            <ul className="flex md:hidden flex-col gap-3 pb-4">
+            <ul className="md:hidden grid gap-1 p-2 absolute top-12 bg-blue-950 rounded-lg w-64 -translate-x-1/2">
               {nav_links.map((link) => (
                 <li key={link.path}>
                   <NavLink
                     to={link.path}
-                    className="block rounded px-3 py-2 hover:bg-green-600 text-white transition"
+                    end={link.path === "/"}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-4 rounded px-5 py-2 transition text-gray-300 ${
+                        isActive
+                          ? "bg-green-600 text-white"
+                          : "hover:bg-green-600 hover:text-white"
+                      }`
+                    }
                   >
+                    {link.icon}
                     {link.name}
                   </NavLink>
                 </li>
@@ -121,12 +127,30 @@ const Header = () => {
           {isLoggedIn && (
             <>
               {/* Favorites */}
-              <NavLink to="/favorites" className={iconLinkClass}>
+              <NavLink
+                to="/favorites"
+                className={({ isActive }) =>
+                  `h-10 w-10 rounded-full hidden md:flex items-center justify-center transition-transform ${
+                    isActive
+                      ? "bg-green-600 text-white rotate-12"
+                      : "bg-gray-200 text-blue-950 hover:bg-green-600 hover:text-white hover:rotate-12"
+                  }`
+                }
+              >
                 <FaHeart />
               </NavLink>
 
               {/* Cart */}
-              <NavLink to="/cart" className={iconLinkClass}>
+              <NavLink
+                to="/cart"
+                className={({ isActive }) =>
+                  `h-10 w-10 rounded-full flex items-center justify-center transition-transform ${
+                    isActive
+                      ? "bg-green-600 text-white rotate-12"
+                      : "bg-gray-200 text-blue-950 hover:bg-green-600 hover:text-white hover:rotate-12"
+                  }`
+                }
+              >
                 <FaCartShopping />
               </NavLink>
             </>
