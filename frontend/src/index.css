@@ -4,3 +4,5 @@
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
