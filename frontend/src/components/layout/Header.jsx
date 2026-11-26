@@ -26,6 +26,8 @@ const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const menuRef = useRef();
 
+  const isAuthenticated = false;
+
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
 
@@ -62,8 +64,6 @@ const Header = () => {
       document.removeEventListener("mousedown", closeMenu);
     };
   }, []);
-
-  const isAuthenticated = true;
 
   const nav_links = [
     { icon: <FaHouse />, name: "Home", path: "/" },
@@ -194,7 +194,7 @@ const Header = () => {
         <div ref={menuRef} className="relative">
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-            className={`h-10 w-10 rounded-full text-blue-950 bg-gray-200 dark:bg-gray-700 dark:text-white flex items-center justify-center hover:bg-green-600 hover:text-white hover:rotate-12 transition-transform cursor-pointer ${isUserMenuOpen && "bg-green-600 text-white rotate-12"}`}
+            className={`h-10 w-10 rounded-full text-blue-950 bg-gray-200 dark:bg-gray-700 dark:text-white flex items-center justify-center hover:bg-green-600 hover:text-white hover:rotate-12 transition-transform cursor-pointer ${isUserMenuOpen && "bg-green-600 dark:bg-green-600 text-white rotate-12"}`}
           >
             <FaUser />
           </button>
