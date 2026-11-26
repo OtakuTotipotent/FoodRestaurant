@@ -13,7 +13,7 @@ function App() {
         <BrowserRouter>
           <Header />
 
-          <main className="min-h-dvh">
+          <main className="min-h-2/4">
             <Routes>
               <Route path="/" exact element={<Home />} />
 
@@ -54,14 +54,7 @@ function App() {
 
               <Route path="signup" exact element={<div>Sign Up</div>} />
 
-              <Route
-                path="*"
-                element={
-                  <div>
-                    <NotFound />
-                  </div>
-                }
-              />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
 
