@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import Home from "./components/pages/Home";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 import Protected from "./components/auth/Protected";
-import NotFound from "./components/pages/NotFound";
 
 function App() {
   const isAuthenticated = false;
@@ -13,7 +13,7 @@ function App() {
         <BrowserRouter>
           <Header />
 
-          <main className="min-h-2/4">
+          <main className="min-h-2/4 p-2">
             <Routes>
               <Route path="/" exact element={<Home />} />
 
