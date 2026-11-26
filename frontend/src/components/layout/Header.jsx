@@ -74,11 +74,11 @@ const Header = () => {
 
   // Header Markup
   return (
-    <nav className="fixed top-0 left-0 right-0 px-4 py-3 flex items-center justify-between z-50 backdrop-blur-lg shadow-lg shadow-gray-200 dark:shadow-gray-950/30">
+    <nav className="fixed top-0 left-0 right-0 px-4 py-3 flex items-center justify-between z-50 backdrop-blur-xl shadow-md shadow-gray-100 dark:shadow-gray-950/30">
       {/* Logo */}
       <NavLink
         to="/"
-        className="text-blue-950 text-xl font-medium flex gap-1.5 items-center dark:text-gray-300"
+        className="text-blue-950 text-xl font-medium flex gap-1.5 items-center dark:text-gray-200"
       >
         <FaUtensils className="text-green-600" /> FoodRest.
       </NavLink>
@@ -96,7 +96,7 @@ const Header = () => {
                   `rounded-md p-2 text-sm transition ${
                     isActive
                       ? "bg-green-600 text-white"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-green-600 hover:text-white"
+                      : "text-gray-600 dark:text-gray-200 hover:bg-green-600 hover:text-white"
                   }`
                 }
               >
@@ -116,7 +116,7 @@ const Header = () => {
 
         {/* Mobile */}
         {isOpen && (
-          <ul className="md:hidden grid gap-1 p-2 absolute top-12 bg-blue-950 rounded-lg w-64 -translate-x-1/2">
+          <ul className="md:hidden grid gap-1 p-2 absolute top-12 bg-green-600 dark:bg-gray-700 border border-gray-700/40 dark:border-green-600/40 rounded-lg w-64 -translate-x-1/2">
             {nav_links.map((link) => (
               <li key={link.path}>
                 <NavLink
@@ -124,10 +124,10 @@ const Header = () => {
                   end={link.path === "/"}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-4 rounded px-5 py-2 transition text-gray-300 ${
+                    `flex items-center gap-4 rounded px-5 py-2 transition text-gray-200 ${
                       isActive
-                        ? "bg-green-600 text-white"
-                        : "hover:bg-green-600 hover:text-white"
+                        ? "bg-blue-950 text-white dark:bg-green-600"
+                        : "hover:bg-blue-950 hover:text-white dark:hover:bg-green-600"
                     }`
                   }
                 >
@@ -200,42 +200,38 @@ const Header = () => {
           </button>
 
           {isUserMenuOpen && (
-            <div className="absolute right-2 mt-4 w-56 rounded-lg backdrop-blur-lg shadow-lg border border-gray-200 dark:border-gray-700/50 overflow-hidden grid z-40">
+            <div className="absolute right-2 mt-4 w-56 rounded-lg bg-blue-950 shadow-lg border border-gray-700/40 overflow-hidden grid z-40">
               {/* Global Search */}
               <button
                 onClick={() => prompt("Search anything within FoodRest.")}
-                className="px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4 cursor-pointer"
+                className="px-4 py-3 text-white hover:bg-green-600 flex md:hidden items-center gap-4 cursor-pointer"
               >
-                <FaMagnifyingGlass className="text-blue-950 dark:text-green-600" />
+                <FaMagnifyingGlass />
                 Search
               </button>
 
               {/* Theme Toggle */}
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4 cursor-pointer"
+                className="px-4 py-3 text-white hover:bg-green-600 flex md:hidden items-center gap-4 cursor-pointer"
               >
-                {darkMode ? (
-                  <FaSun className="text-blue-950 dark:text-green-600" />
-                ) : (
-                  <FaMoon className="text-blue-950 dark:text-green-600" />
-                )}
+                {darkMode ? <FaSun /> : <FaMoon />}
                 Theme
               </button>
 
               {!isAuthenticated ? (
                 <>
                   <NavLink
-                    to="/signin"
-                    className="px-4 py-3 text-green-600 hover:bg-gray-200 dark:hover:bg-gray-950 flex items-center gap-4"
+                    to="signin"
+                    className="px-4 py-3 text-green-600 hover:text-white hover:bg-green-600 flex items-center gap-4"
                   >
                     <FaRightToBracket />
                     Sign In
                   </NavLink>
 
                   <NavLink
-                    to="/signup"
-                    className="px-4 py-3 text-green-600 hover:bg-gray-200 dark:hover:bg-gray-950 flex items-center gap-4"
+                    to="signup"
+                    className="px-4 py-3 text-green-600 hover:text-white hover:bg-green-600 flex items-center gap-4"
                   >
                     <FaUserPlus />
                     Sign Up
@@ -244,24 +240,24 @@ const Header = () => {
               ) : (
                 <>
                   <NavLink
-                    to="/favorites"
-                    className="px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4"
+                    to="cart"
+                    className="px-4 py-3 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4"
                   >
                     <FaCartShopping className="text-blue-950 dark:text-green-600" />
                     Cart
                   </NavLink>
 
                   <NavLink
-                    to="/favorites"
-                    className="px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4"
+                    to="favorites"
+                    className="px-4 py-3 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-950 flex md:hidden items-center gap-4"
                   >
                     <FaHeart className="text-blue-950 dark:text-green-600" />
                     Favorites
                   </NavLink>
 
                   <NavLink
-                    to="/settings"
-                    className="px-4 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950 flex items-center gap-4"
+                    to="settings"
+                    className="px-4 py-3 text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-950 flex items-center gap-4"
                   >
                     <FaGear className="text-blue-950 dark:text-green-600" />
                     Settings

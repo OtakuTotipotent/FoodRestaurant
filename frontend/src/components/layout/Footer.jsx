@@ -1,154 +1,160 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <>
       <footer className="border-t border-gray-200 dark:border-gray-700/50 px-1 pt-4">
         <div className="grid gap-6 grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg:text-center">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg text-blue-950 dark:text-green-600 font-medium">
-              Menu Categories
-            </h3>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
-            >
-              Pizza
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
-            >
-              Burgers
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
-            >
-              Sandwiches &amp; Rolls
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
-            >
-              Shawarma &amp; Wraps
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
-            >
-              Fries, Pasta &amp; Sides
-            </a>
-          </div>
-
+          {/* Quick Links */}
           <div className="flex flex-col gap-2">
             <h3 className="text-lg text-blue-950 dark:text-green-600 font-medium">
               Quick Links
             </h3>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            <Link
+              to="/"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Home
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#dishes"
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Dishes
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#about"
+            </Link>
+            <Link
+              to="about"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               About
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#menu"
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Menu
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#review"
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Review
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#order"
+            </Link>
+            <Link
+              to="order"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Order
-            </a>
+            </Link>
           </div>
 
+          {/* Product Menu */}
+          <div className="flex flex-col gap-2">
+            <h3 className="text-lg text-blue-950 dark:text-green-600 font-medium">
+              Menu Categories
+            </h3>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
+            >
+              Pizza
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
+            >
+              Burgers
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
+            >
+              Sandwiches & Rolls
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
+            >
+              Shawarma & Wraps
+            </Link>
+            <Link
+              to="products"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
+            >
+              Fries, Pasta &; Sides
+            </Link>
+          </div>
+
+          {/* Contacts */}
           <div className="flex flex-col gap-2">
             <h3 className="text-lg text-blue-950 dark:text-green-600 font-medium">
               Contact Info.
             </h3>
-            <a
-              className=" text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            <Link
+              to="#"
+              className=" text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               +92 000 0000000
-            </a>
-            <a
-              className=" text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className=" text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               +92 000 0000000
-            </a>
-            <a
-              className=" text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className=" text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               info@gmail.com
-            </a>
-            <a
-              className=" text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className=" text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Samipur, near Bhagal Canal Bridge, Layyah
-            </a>
+            </Link>
           </div>
 
+          {/* Social Accounts */}
           <div className="flex flex-col gap-2">
             <h3 className="text-lg text-blue-950 dark:text-green-600 font-medium">
               Follow us
             </h3>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            <Link
+              to="#"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               TikTok
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Facebook
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Instagram
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Twitter | X
-            </a>
-            <a
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 hover:underline"
-              href="#"
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-gray-600 dark:text-gray-200 hover:text-green-600 hover:underline"
             >
               Linkedin
-            </a>
+            </Link>
           </div>
         </div>
 
-        <div className="text-center border-t border-gray-200 dark:border-gray-700/50 font-medium text-blue-950 dark:text-gray-300 pt-2 mt-4">
+        <div className="text-center border-t border-gray-200 dark:border-gray-700/50 font-medium text-blue-950 dark:text-gray-200 pt-2 mt-4">
           Copyright @ 2026 <span className="text-green-600">FoodRest.</span>
         </div>
       </footer>

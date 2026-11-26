@@ -5,7 +5,9 @@
 ## Tech Stack
 
 - ReactJS
-- Vanilla CSS (Modules)
+- Tailwindcss (styling)
+- Yup & Formik (input validations)
+- Redux Toolkit (state management)
 
 ## Prerequisites
 
@@ -30,6 +32,17 @@ npm run dev
 ## TODOs
 
 - Use Google Inter font family
+- Customize Scrollbar
+
+## Color Palette
+
+- **Body**: bg-white, dark:bg-gray-900
+- **Heading**: text-blue-950, dark:text-white, dark:text-green-600
+- **Text**: text-gray-600, dark:text-gray-200
+- **elements**: bg-gray-200, dark:bg-gray-700
+- **Error**: bg-red-400, dark:bg-red-500/50, text-white, dark:text-gray-200, text-red-400/500
+- **Borders**: border-gray-200, dark:border-gray-700/40,
+- **Shadow**: shadow-md, shadow-gray-100, dark:shadow-gray-950/30
 
 ## Credits
 
