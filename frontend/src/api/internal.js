@@ -11,7 +11,7 @@ const api = axios.create({
 export const signin = async (data) => {
 
   try {
-    const response = await api.post("/signin", data);
+    const response = await api.post("/auth/signin", data);
 
     return response;
   }

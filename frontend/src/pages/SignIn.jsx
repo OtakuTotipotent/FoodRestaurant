@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import { signin } from "../api/internal";
 import { setUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // SignIn Component
 const SignIn = () => {
@@ -20,7 +20,7 @@ const SignIn = () => {
   });
 
   const dispatch = useDispatch();
-  const navigate = Navigate();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   // Handle Signin
@@ -43,7 +43,8 @@ const SignIn = () => {
       dispatch(setUser(user));
       navigate("/");
     } else if (response.code === "ERR_BAD_REQUEST") {
-      setError(response.data.errormessage);
+      console.log(error);
+      setError(response.response.data.errorMessage);
     }
   };
 
@@ -89,7 +90,7 @@ const SignIn = () => {
       <span className="flex gap-2 mb-2">
         Don't have an account?
         <button
-          onClick={navigate("/signup")}
+          onClick={() => navigate("/signup")}
           className="text-green-600 hover:underline font-medium cursor-pointer"
         >
           Signup

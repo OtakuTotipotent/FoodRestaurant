@@ -31,8 +31,7 @@ npm run dev
 
 ## TODOs
 
-- Use Google Inter font family
-- Customize Scrollbar
+- Sync theme to system
 
 ## Color Palette
 
