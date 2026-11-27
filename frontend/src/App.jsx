@@ -4,7 +4,7 @@ import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Protected from "./components/auth/Protected";
-import SignIn from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 
 function App() {
   const isAuthenticated = false;

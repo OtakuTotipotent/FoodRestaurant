@@ -6,3 +6,42 @@
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #16a34a #e5e7eb;
+}
+
+.dark * {
+  scrollbar-color: #22c55e #111827;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e5e7eb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #16a34a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #15803d;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #22c55e;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #16a34a;
+}
