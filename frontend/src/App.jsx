@@ -5,9 +5,10 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Protected from "./components/auth/Protected";
 import SignIn from "./pages/SignIn";
+import { useSelector } from "react-redux";
 
 function App() {
-  const isAuthenticated = false;
+  const isAuthenticated = useSelector((state) => state.user.auth);
   return (
     <BrowserRouter>
       <Header />

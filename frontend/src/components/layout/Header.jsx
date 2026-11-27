@@ -19,6 +19,7 @@ import {
   FaSun,
   FaMoon,
 } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 // Header Component
 const Header = () => {
@@ -26,7 +27,7 @@ const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const menuRef = useRef();
 
-  const isAuthenticated = false;
+  const isAuthenticated = useSelector((state) => state.user.auth);
 
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");

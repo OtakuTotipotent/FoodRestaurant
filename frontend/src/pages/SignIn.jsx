@@ -37,13 +37,12 @@ const SignIn = () => {
         _id: response.data.user._id,
         email: response.data.user.email,
         username: response.data.user.username,
-        auth: response.data.user.auth,
+        auth: response.data.auth,
       };
 
       dispatch(setUser(user));
       navigate("/");
     } else if (response.code === "ERR_BAD_REQUEST") {
-      console.log(error);
       setError(response.response.data.errorMessage);
     }
   };
@@ -87,7 +86,7 @@ const SignIn = () => {
       </button>
 
       {/* Signup Reference */}
-      <span className="flex gap-2 mb-2">
+      <span className="flex gap-2">
         Don't have an account?
         <button
           onClick={() => navigate("/signup")}
@@ -96,6 +95,14 @@ const SignIn = () => {
           Signup
         </button>
       </span>
+
+      {/* External Errors */}
+      {}
+      {error != "" ? (
+        <p className="bg-red-400/70 p-2 rounded-md text-sm">{error}</p>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
